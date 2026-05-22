@@ -134,7 +134,7 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
@@ -152,11 +152,39 @@
       return;
     }
 
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
     setMessage("送信中...");
 
-    window.setTimeout(() => {
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const errorText =
+          typeof data.error === "string"
+            ? data.error
+            : "送信に失敗しました。しばらくしてから再度お試しください。";
+        setMessage(errorText, true);
+        return;
+      }
+
       setMessage("お問い合わせありがとうございます。2営業日以内にご返信いたします。");
       form.reset();
-    }, 600);
+    } catch {
+      setMessage("送信に失敗しました。通信環境をご確認のうえ、再度お試しください。", true);
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+    }
   });
 })();
