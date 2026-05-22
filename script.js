@@ -12,13 +12,36 @@
         });
       },
       {
-        threshold: 0.2,
-        rootMargin: "0px 0px -8% 0px",
+        threshold: 0.05,
+        rootMargin: "0px",
       }
     );
 
+    const isInViewport = (target) => {
+      const rect = target.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
+    const markVisible = (target) => {
+      target.classList.add("is-visible");
+      revealObserver.unobserve(target);
+    };
+
     revealTargets.forEach((target) => {
-      revealObserver.observe(target);
+      if (isInViewport(target)) {
+        markVisible(target);
+      } else {
+        revealObserver.observe(target);
+      }
+    });
+
+    // 画像読み込み後のレイアウト変化で見え方がずれる場合の再チェック（モバイル向け）
+    window.addEventListener("load", () => {
+      revealTargets.forEach((target) => {
+        if (!target.classList.contains("is-visible") && isInViewport(target)) {
+          markVisible(target);
+        }
+      });
     });
   }
 

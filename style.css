@@ -497,6 +497,20 @@ button[type="submit"]:focus-visible {
   transform: translateY(0);
 }
 
+/* 親が表示されたら、内側の .reveal も表示（カード単位の監視が届かない場合のフォールバック） */
+.reveal.is-visible .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .site-footer {
   padding: 2rem 0 2.5rem;
   text-align: center;
