@@ -305,6 +305,10 @@ p {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.works-grid--sns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .work-card {
   background: var(--off-white);
   border: 1px solid var(--border-soft);
@@ -337,6 +341,11 @@ p {
 
 .work-card--banner img {
   aspect-ratio: 16 / 9;
+}
+
+.work-card--sns img {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
 }
 
 .work-caption {
@@ -566,7 +575,8 @@ button[type="submit"]:focus-visible {
 
   .works-grid--print,
   .works-grid--thumb,
-  .works-grid--banner {
+  .works-grid--banner,
+  .works-grid--sns {
     gap: 1rem;
   }
 }
@@ -603,7 +613,8 @@ button[type="submit"]:focus-visible {
 
   .works-grid--print,
   .works-grid--thumb,
-  .works-grid--banner {
+  .works-grid--banner,
+  .works-grid--sns {
     grid-template-columns: 1fr;
   }
 
